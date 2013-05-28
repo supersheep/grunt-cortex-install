@@ -8,7 +8,7 @@
 
 'use strict';
 
-var cortex_install = require("../lib/cortex-install");
+var cortexInstaller = require("../lib/cortex-install");
 
 
 
@@ -20,15 +20,13 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('cortex-install', 'Install cortex modules.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var done = this.async();
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
-    });
+    var options = this.options();
 
-    grunt.log.debug(done)
-    cortex_install.install(process.cwd(),options,function(err){
+    var installer = new cortexInstaller(options);
+
+    installer.install(process.cwd(),function(err){
       if(err){
-          grunt.log.error(err)
+          grunt.log.error(err);
           process.exit(1);
       }
       grunt.log.ok("all dependencies installed");
